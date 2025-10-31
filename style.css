@@ -63,6 +63,16 @@ button {
   gap: 1rem;
 }
 
+textarea#prompt {
+  min-height: 7rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .not-supported-message {
   border: red solid 2px;
   padding: 0.25rem;

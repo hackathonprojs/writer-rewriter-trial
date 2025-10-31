@@ -4,7 +4,7 @@
   "scripts": {
     "start": "npx http-server -p 8080"
   },
-  "author": "Thomas Steiner (tomac@google.com)",
+  "author": "sol wu (apiswswsw@gmail.com)",
   "license": "Apache-2.0",
   "devDependencies": {
     "https-server": "^0.1.2"

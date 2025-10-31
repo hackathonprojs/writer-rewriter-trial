@@ -17,7 +17,7 @@
       rel="icon"
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>"
     />
-    <title>Writer / Rewriter API Playground</title>
+    <title>Super Human Memorizer</title>
     <link rel="stylesheet" href="style.css" />
     <script>
       if (!isSecureContext) location.protocol = 'https:';
@@ -25,13 +25,10 @@
     <script src="script.js" type="module"></script>
   </head>
   <body>
-    <h1>📝 Writer / Rewriter API Playground</h1>
+    <h1>🧠 Super Human Memorizer</h1>
     <p>
-      This is a demo of Chrome's
-      <a href="https://developer.chrome.com/docs/ai/built-in"
-        >built-in Writer / Rewriter API</a
-      >
-      powered by Gemini Nano.
+      Enter 12–24 random words and generate a vivid short story that includes all of them.
+      Powered by Chrome's <a href="https://developer.chrome.com/docs/ai/built-in">built-in Writer API</a>.
     </p>
     <div id="error-message"></div>
     <div class="not-supported-message" hidden>
@@ -39,12 +36,14 @@
     </div>
     <form hidden class="write-form">
       <div class="wrapper">
-        <label for="prompt">Prompt</label>
-        <textarea id="prompt">
-Write an email to my bank asking them to raise my credit limit from $1,000 to $10,000.</textarea
-        >
-        <label for="context">Context</label>
-        <input id="context" value="I'm a long-standing customer." />
+        <label for="prompt">Words (12–24)</label>
+        <textarea id="prompt" placeholder="e.g., river, lantern, magnet, sapphire, canyon, violin, comet, orchard, whisper, atlas, neon, quartz"></textarea>
+        <div class="controls">
+          <span>Count: <strong class="word-count">0</strong></span>
+          <button type="button" class="randomize-button">🎲 Randomize 12–24 words</button>
+        </div>
+        <label for="context">Style (optional)</label>
+        <input id="context" placeholder="e.g., whimsical sci‑fi, noir mystery, inspirational" />
         <!-- Remove this DIV once options are supported. -->
         <div style="display: none;">
         <label
@@ -71,45 +70,11 @@ Write an email to my bank asking them to raise my credit limit from $1,000 to $1
           </select>
         </label>
         </div>
-        <button class="write-button" type="submit">📝 Write</button>
+        <button class="write-button" type="submit">📝 Generate Story</button>
       </div>
     </form>
     <output hidden></output>
     <button hidden class="copy-button">📋 Copy</button>
-    <form hidden class="rewrite-form">
-      <fieldset>
-        <legend>Rewrite:</legend>
-        <label><input checked type="radio" name="what" value="tone"> Tone</label>
-        <label><input type="radio" name="what" value="length"> Length</label>
-        <div class="wrapper">
-          <label hidden
-            >Rewrite tone:
-            <select class="rewrite-tone">
-              <option selected value="as-is">As is</option>
-              <option value="more-formal">More formal</option>
-              <option value="more-casual">More casual</option>
-            </select></label
-          >
-          <label hidden
-            >Rewrite format:
-            <select class="rewrite-format">
-              <option selected value="as-is">As is</option>
-              <option value="plain-text">Plain text</option>
-              <option value="markdown">Markdown</option>
-            </select></label
-          >
-          <label hidden
-            >Rewrite length:
-            <select class="rewrite-length">
-              <option selected value="as-is">As is</option>
-              <option value="shorter">Shorter</option>
-              <option value="longer">Longer</option>
-            </select>
-          </label>
-          <button class="rewrite-button" type="submit">♻️ Rewrite</button>
-        </div>
-      </fieldset>
-    </form>
     <footer>
       Made by <a href="https://github.com/tomayac/">@tomayac</a>.
       Source code on <a href="https://github.com/GoogleChromeLabs/web-ai-demos">GitHub</a>.
