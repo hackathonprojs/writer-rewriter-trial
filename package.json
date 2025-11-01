@@ -1,5 +1,5 @@
 {
-  "name": "writer-rewriter-api-playground",
+  "name": "super-human-memorizer",
   "version": "1.0.0",
   "scripts": {
     "start": "npx http-server -p 8080"
