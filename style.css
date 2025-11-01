@@ -124,3 +124,23 @@ footer {
   color: #b9bbd3;
   text-align: center;
 }
+
+/* Improve link visibility and accessibility on dark background */
+a {
+  color: #8ecbff;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+a:visited {
+  color: #c2b6ff;
+}
+a:hover {
+  color: #ffffff;
+}
+a:focus-visible {
+  outline: 2px solid rgba(124, 92, 255, 0.75);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
