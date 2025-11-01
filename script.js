@@ -94,7 +94,7 @@ import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.
     const list = words.join(', ');
     const styleLine = style ? `Style: ${style}.` : '';
     return `You are a creative writing assistant for memory training.
-Use all of the following words naturally in a coherent short story: ${list}.
+Use all of the following words naturally in a coherent story to help user remember them: ${list}.
 Requirements:
 - Bold each word the first time it appears (use **bold**).
 - 5–8 sentences. Max 250 words.
