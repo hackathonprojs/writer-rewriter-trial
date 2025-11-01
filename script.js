@@ -25,8 +25,6 @@ import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.
   const lengthSelect = document.querySelector('.length');
   const wordCountEl = document.querySelector('.word-count');
   const randomizeButton = document.querySelector('.randomize-button');
-  const rewriteFormatSelect = document.querySelector('.rewrite-format');
-  const rewriteToneSelect = document.querySelector('.rewrite-tone');
   const rewriteLengthSelect = document.querySelector('.rewrite-length');
 
   writeForm.hidden = false;
@@ -95,9 +93,7 @@ import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.
   const createRewriter = async () => {
     if (!('Rewriter' in self)) return; // graceful degrade
     const options = {
-      tone: rewriteToneSelect?.value || 'as-is',
       length: rewriteLengthSelect?.value || 'as-is',
-      format: rewriteFormatSelect?.value || 'as-is',
       sharedContext: contextInput.value.trim(),
     };
     rewriter = await Rewriter.create(options);
@@ -171,7 +167,7 @@ ${styleLine}`;
     }
     rewriteForm.hidden = false;
     copyButton.hidden = false;
-    [rewriteToneSelect, rewriteLengthSelect, rewriteFormatSelect].forEach(
+    [rewriteLengthSelect].forEach(
       (select) => select && (select.value = 'as-is')
     );
   };
@@ -182,20 +178,6 @@ ${styleLine}`;
       await createRewriter();
       await rewrite();
     });
-
-    // Remove once multiple rewrite options are supported.
-    const whatTone = document.querySelector('[name=what][value=tone]');
-    const whatLength = document.querySelector('[name=what][value=length]');
-
-    [whatTone, whatLength].forEach((what) => {
-      what?.addEventListener('change', () => {
-        if (rewriteToneSelect?.labels?.[0]) rewriteToneSelect.labels[0].hidden = !whatTone.checked;
-        if (rewriteLengthSelect?.labels?.[0]) rewriteLengthSelect.labels[0].hidden = !whatLength.checked;
-        if (rewriteFormatSelect?.labels?.[0]) rewriteFormatSelect.labels[0].hidden = true;
-      });
-    });
-    if (rewriteToneSelect?.labels?.[0]) rewriteToneSelect.labels[0].hidden = false; // default tone
-    if (rewriteLengthSelect?.labels?.[0]) rewriteLengthSelect.labels[0].hidden = true; // length off by default
     if (!('Rewriter' in self)) {
       // If Rewriter not available, keep the form hidden.
       rewriteForm.hidden = true;
