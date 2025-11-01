@@ -1,0 +1,172 @@
+/**
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+:root {
+  color-scheme: dark light;
+  --bg-start: #0f1226;
+  --bg-end: #1a1f3a;
+  --card: color-mix(in oklab, Canvas 70%, transparent);
+  --border: color-mix(in oklab, CanvasText 20%, transparent);
+  --text-subtle: color-mix(in oklab, CanvasText 70%, transparent);
+  --accent: #7c5cff;
+  --accent-2: #00d4ff;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji";
+  min-height: 100svh;
+  display: grid;
+  place-items: start center;
+  background: radial-gradient(1200px 800px at 20% -10%, color-mix(in oklab, var(--accent) 25%, transparent), transparent),
+              radial-gradient(1200px 800px at 110% 10%, color-mix(in oklab, var(--accent-2) 20%, transparent), transparent),
+              linear-gradient(180deg, var(--bg-start), var(--bg-end));
+  color: CanvasText;
+  padding: clamp(16px, 3vw, 32px);
+}
+
+h1 {
+  font-size: clamp(1.6rem, 2.4vw + 1rem, 2.4rem);
+  letter-spacing: 0.3px;
+  margin: 0 0 0.25rem;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+p {
+  margin: 0 0 1.25rem;
+  color: var(--text-subtle);
+}
+
+output,
+form,
+.rewrite-form fieldset {
+  width: min(100%, 820px);
+  margin: 1rem 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+}
+
+label {
+  font-weight: bold;
+}
+
+output {
+  white-space: pre;
+  text-wrap: wrap;
+  padding-block-end: 3rem;
+  padding: 1rem 1rem 3rem;
+}
+
+.copy-button {
+  position: relative;
+  top: -2.5rem;
+  left: 0.75rem;
+}
+
+.rewrite-form fieldset {
+  padding: 1rem;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  appearance: none;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 12%, Canvas), color-mix(in oklab, var(--accent-2) 6%, Canvas));
+  color: CanvasText;
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 200ms ease;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+button:hover {
+  transform: translateY(-1px);
+}
+button:active {
+  transform: translateY(0);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+textarea#prompt {
+  min-height: 7rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.controls .word-count::after {
+  content: ' words';
+  color: var(--text-subtle);
+  font-weight: 500;
+}
+
+input, textarea, select {
+  width: 100%;
+  background: color-mix(in oklab, Canvas 92%, transparent);
+  color: CanvasText;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem 0.85rem;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+input::placeholder, textarea::placeholder {
+  color: var(--text-subtle);
+}
+input:focus, textarea:focus, select:focus {
+  border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent);
+}
+
+.write-form .write-button {
+  align-self: start;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 35%, Canvas), color-mix(in oklab, var(--accent-2) 25%, Canvas));
+}
+
+.rewrite-form .rewrite-button {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--accent-2) 35%, Canvas), color-mix(in oklab, var(--accent) 25%, Canvas));
+}
+
+.not-supported-message {
+  border: 1px solid #ff4d4f;
+  background: color-mix(in oklab, #ff4d4f 10%, Canvas);
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+}
+
+footer {
+  margin-block: 2rem 0.5rem;
+  color: var(--text-subtle);
+  text-align: center;
+}
