@@ -1,5 +1,4 @@
 /**
- * Copyright 2024 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -11,11 +10,12 @@ import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.
     document.querySelector('.not-supported-message').hidden = false;
   };
 
-  if (!('Writer' in self)) { // Require Writer (Rewriter not needed)
+  if (!('Writer' in self)) { // Require Writer (Rewriter used if available)
     return showNotSupportedMessage();
   }
 
   const writeForm = document.querySelector('.write-form');
+  const rewriteForm = document.querySelector('.rewrite-form');
   const contextInput = document.querySelector('input');
   const copyButton = document.querySelector('.copy-button');
   const output = document.querySelector('output');
@@ -25,10 +25,14 @@ import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.
   const lengthSelect = document.querySelector('.length');
   const wordCountEl = document.querySelector('.word-count');
   const randomizeButton = document.querySelector('.randomize-button');
+  const rewriteFormatSelect = document.querySelector('.rewrite-format');
+  const rewriteToneSelect = document.querySelector('.rewrite-tone');
+  const rewriteLengthSelect = document.querySelector('.rewrite-length');
 
   writeForm.hidden = false;
 
   let writer;
+  let rewriter;
 
   const toWords = (text) => {
     // split on commas or whitespace, strip punctuation
@@ -88,6 +92,17 @@ import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.
     writer = await Writer.create(options);
   };
 
+  const createRewriter = async () => {
+    if (!('Rewriter' in self)) return; // graceful degrade
+    const options = {
+      tone: rewriteToneSelect?.value || 'as-is',
+      length: rewriteLengthSelect?.value || 'as-is',
+      format: rewriteFormatSelect?.value || 'as-is',
+      sharedContext: contextInput.value.trim(),
+    };
+    rewriter = await Rewriter.create(options);
+  };
+
   const buildPrompt = () => {
     const words = toWords(textarea.value);
     const style = contextInput.value.trim();
@@ -105,6 +120,7 @@ ${styleLine}`;
   const write = async () => {
     output.style.display = 'block';
     copyButton.hidden = true;
+    if (rewriteForm) rewriteForm.hidden = true;
     const words = toWords(textarea.value);
     if (words.length < 12 || words.length > 24) {
       output.textContent = 'Please enter between 12 and 24 words (separated by spaces or commas).';
@@ -121,6 +137,9 @@ ${styleLine}`;
       output.innerHTML = DOMPurify.sanitize(fullResponse);
     }
     copyButton.hidden = false;
+    if ('Rewriter' in self && rewriteForm) {
+      rewriteForm.hidden = false;
+    }
   };
 
   writeForm.addEventListener('submit', async (e) => {
@@ -132,4 +151,54 @@ ${styleLine}`;
   copyButton.addEventListener('click', async () => {
     await navigator.clipboard.writeText(output.innerText);
   });
+
+  // Rewrite functionality (tone/length)
+  const rewrite = async () => {
+    if (!('Rewriter' in self) || !rewriteForm) return;
+    rewriteForm.hidden = true;
+    copyButton.hidden = true;
+    const prompt = output.innerHTML.trim();
+    if (!prompt) {
+      return;
+    }
+    output.textContent = 'Rewriting…';
+    const stream = await rewriter.rewriteStreaming(prompt);
+    output.textContent = '';
+    let fullResponse = '';
+    for await (const chunk of stream) {
+      fullResponse = 'Rewriter' in self ? fullResponse + chunk : chunk;
+      output.innerHTML = DOMPurify.sanitize(fullResponse);
+    }
+    rewriteForm.hidden = false;
+    copyButton.hidden = false;
+    [rewriteToneSelect, rewriteLengthSelect, rewriteFormatSelect].forEach(
+      (select) => select && (select.value = 'as-is')
+    );
+  };
+
+  if (rewriteForm) {
+    rewriteForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await createRewriter();
+      await rewrite();
+    });
+
+    // Remove once multiple rewrite options are supported.
+    const whatTone = document.querySelector('[name=what][value=tone]');
+    const whatLength = document.querySelector('[name=what][value=length]');
+
+    [whatTone, whatLength].forEach((what) => {
+      what?.addEventListener('change', () => {
+        if (rewriteToneSelect?.labels?.[0]) rewriteToneSelect.labels[0].hidden = !whatTone.checked;
+        if (rewriteLengthSelect?.labels?.[0]) rewriteLengthSelect.labels[0].hidden = !whatLength.checked;
+        if (rewriteFormatSelect?.labels?.[0]) rewriteFormatSelect.labels[0].hidden = true;
+      });
+    });
+    if (rewriteToneSelect?.labels?.[0]) rewriteToneSelect.labels[0].hidden = false; // default tone
+    if (rewriteLengthSelect?.labels?.[0]) rewriteLengthSelect.labels[0].hidden = true; // length off by default
+    if (!('Rewriter' in self)) {
+      // If Rewriter not available, keep the form hidden.
+      rewriteForm.hidden = true;
+    }
+  }
 })();

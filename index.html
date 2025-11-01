@@ -75,6 +75,40 @@
     </form>
     <output hidden></output>
     <button hidden class="copy-button">📋 Copy</button>
+    <form hidden class="rewrite-form">
+      <fieldset>
+        <legend>Rewrite:</legend>
+        <label><input checked type="radio" name="what" value="tone"> Tone</label>
+        <label><input type="radio" name="what" value="length"> Length</label>
+        <div class="wrapper">
+          <label hidden
+            >Rewrite tone:
+            <select class="rewrite-tone">
+              <option selected value="as-is">As is</option>
+              <option value="more-formal">More formal</option>
+              <option value="more-casual">More casual</option>
+            </select></label
+          >
+          <label hidden
+            >Rewrite format:
+            <select class="rewrite-format">
+              <option selected value="as-is">As is</option>
+              <option value="plain-text">Plain text</option>
+              <option value="markdown">Markdown</option>
+            </select></label
+          >
+          <label hidden
+            >Rewrite length:
+            <select class="rewrite-length">
+              <option selected value="as-is">As is</option>
+              <option value="shorter">Shorter</option>
+              <option value="longer">Longer</option>
+            </select>
+          </label>
+          <button class="rewrite-button" type="submit">♻️ Rewrite</button>
+        </div>
+      </fieldset>
+    </form>
     <footer>
       Made by <a href="https://github.com/swswsw/">@swswsw</a>.
       Source code on <a href="https://github.com/hackathonprojs/super-human-memorizer-demo">GitHub</a>.
